@@ -64,7 +64,10 @@ public abstract class AbstractProblem implements Problem {
 	}
 
 	@Override
-	public abstract float heuresticFunction(State state);
+	public abstract float calculateHeuristic(State state);
+	
+	@Override
+	public abstract float calculateDistance(State state1, State state2);
 
 	@Override
 	public State getInitState() {

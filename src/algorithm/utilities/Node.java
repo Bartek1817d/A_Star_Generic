@@ -1,12 +1,21 @@
 package algorithm.utilities;
 
 public class Node implements Comparable<Node> {
+	
+	private Node parent;
 	private State state;
 	private float g, h;
 
 	public Node(State state) {
-		super();
 		this.state = state;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 
 	public State getState() {
@@ -15,6 +24,10 @@ public class Node implements Comparable<Node> {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public float getF() {
+		return g + h;
 	}
 
 	public float getG() {
@@ -34,18 +47,47 @@ public class Node implements Comparable<Node> {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		Node OtherNode = (Node) other;
-		return state.equals(OtherNode.getState());
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(g);
+		result = prime * result + Float.floatToIntBits(h);
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Node other = (Node) obj;
+		if (Float.floatToIntBits(g) != Float.floatToIntBits(other.g))
+			return false;
+		if (Float.floatToIntBits(h) != Float.floatToIntBits(other.h))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		return true;
 	}
 
 	@Override
 	public int compareTo(Node other) {
-		float f = g + h;
-		float otherF = other.getG() + other.getH();
-		if (f > otherF)
+		if (getF() > other.getF())
 			return 1;
-		else if (f == otherF)
+		else if (getF() == other.getF())
 			return 0;
 		else
 			return -1;

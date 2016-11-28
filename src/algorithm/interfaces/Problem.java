@@ -10,7 +10,9 @@ public interface Problem {
 
 	boolean isDestState(State state);
 
-	public float heuresticFunction(State state);
+	public float calculateHeuristic(State state);
+	
+	public float calculateDistance(State state1, State state2);
 
 	public State getInitState();
 
