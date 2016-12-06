@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -14,9 +16,10 @@ import algorithm.utilities.Point;
 import algorithm.utilities.State;
 
 public abstract class AbstractProblem implements Problem {
-	private State initState;
-	private State destState;
-	private char map[][];
+	protected State initState;
+	protected State destState;
+	protected char map[][];
+	protected static Map<State, Float> heuristics = new HashMap<State, Float>();
 
 	public void praseFromBMP(String path) throws IOException {
 
@@ -33,7 +36,7 @@ public abstract class AbstractProblem implements Problem {
 				} else if (color == Color.RED.getRGB()) {
 					destState = new State(new Point<Integer>(x, y), new Point<Integer>(0, 0));
 					map[x][y] = 3;
-				} else {
+				} else if (color == Color.WHITE.getRGB()){
 					map[x][y] = 0;
 				}
 			}
@@ -47,7 +50,10 @@ public abstract class AbstractProblem implements Problem {
 		int middleY = state.getPosition().getY() + state.getVelocity().getY();
 		for (int x = middleX - 1; x <= middleX + 1; x++) {
 			for (int y = middleY - 1; y <= middleY + 1; y++) {
-				if (map[x][y] != 1) {
+				if (x >= 0 && x < map.length && y >= 0 && y < map[x].length && map[x][y] != 1) {
+					Point<Integer> zero = new Point<Integer>(0, 0);
+					if (state.getVelocity().equals(zero) && x == middleX && y == middleY)
+						continue;
 					Point<Integer> newPosition = new Point<Integer>(x, y);
 					Point<Integer> newVelocity = new Point<Integer>(x - state.getPosition().getX(),
 							y - state.getPosition().getY());
@@ -60,12 +66,13 @@ public abstract class AbstractProblem implements Problem {
 
 	@Override
 	public boolean isDestState(State state) {
-		return state.equals(destState);
+		// return state.equals(destState);
+		return state.getPosition().equals(destState.getPosition());
 	}
 
 	@Override
 	public abstract float calculateHeuristic(State state);
-	
+
 	@Override
 	public abstract float calculateDistance(State state1, State state2);
 

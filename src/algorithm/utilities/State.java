@@ -61,18 +61,4 @@ public class State {
 		return "position=" + position + ", " + "velocity=" + velocity;
 	}
 
-	/*
-	 * @Override public int compareTo(State other) { float f = g + h; float
-	 * otherf = other.getG() + other.getH(); if (f < otherf) return 1; else if
-	 * (f == otherf) return 0; else return -1; }
-	 */
-
-	/*
-	 * public static void main(String argv[]) { State state1 = new State(new
-	 * Point<Integer>(0, 0), new Point<Integer>(1, 1)); State state2 = new
-	 * State(new Point<Integer>(0, 0), new Point<Integer>(1, 1));
-	 * 
-	 * System.out.println(state1.equals(state2)); }
-	 */
-
 }

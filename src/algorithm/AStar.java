@@ -22,26 +22,29 @@ public class AStar {
 	public Node run() {
 		openSet.add(new Node(problem.getInitState()));
 
-		// algorithm to implement
 		while (!openSet.isEmpty()) {
 			Node node = openSet.poll();
-			if (problem.isDestState(node.getState()) && !openSet.isEmpty() && openSet.peek().getF() > node.getF()) {
+			System.out.println("Processing node: " + node);
+			if (problem.isDestState(node.getState())) {
 				System.out.println("Found");
 				return node;
 			}
 			closedSet.add(node);
+			float g = node.getG();
 			Set<State> neighbors = problem.getNeighborStates(node.getState());
 			for (State neighbor : neighbors) {
+				//System.out.println("Processing neighbor: " + neighbor);
 				Node neigh_node = new Node(neighbor);
-				if (closedSet.contains(neigh_node))
+				if (closedSet.contains(neigh_node)) {
 					continue;
+				}
 				if (!openSet.contains(neigh_node)) {
 					neigh_node.setParent(node);
 					neigh_node.setH(problem.calculateHeuristic(neighbor));
-					neigh_node.setG(problem.calculateDistance(neighbor, node.getState()));
+					neigh_node.setG(g + problem.calculateDistance(neighbor, node.getState()));
 					openSet.add(neigh_node);
 				} else {
-					float newG = problem.calculateDistance(neighbor, node.getState());
+					float newG = g + problem.calculateDistance(neighbor, node.getState());
 					if (newG < neigh_node.getG()) {
 						neigh_node.setParent(node);
 						neigh_node.setG(newG);
@@ -52,14 +55,20 @@ public class AStar {
 		return null;
 	}
 
-	/*public static void main(String args[]) {
-		Set<Node> closedSet = new HashSet<Node>();
-		State state1 = new State(new Point<Integer>(1, 1), new Point<Integer>(1, 1));
-		State state2 = new State(new Point<Integer>(1, 1), new Point<Integer>(1, 1));
-		Node node1 = new Node(state1);
-		Node node2 = new Node(state2);
-		closedSet.add(node1);
-		System.out.println(state1.equals(state2));
-	}*/
+	public void generatePath(Node node) {
+		if (node.getParent() != null)
+			generatePath(node.getParent());
+
+		System.out.println(node);
+	}
+
+	/*
+	 * public static void main(String args[]) { Set<Node> closedSet = new
+	 * HashSet<Node>(); State state1 = new State(new Point<Integer>(1, 1), new
+	 * Point<Integer>(1, 1)); State state2 = new State(new Point<Integer>(1, 1),
+	 * new Point<Integer>(1, 1)); Node node1 = new Node(state1); Node node2 =
+	 * new Node(state2); closedSet.add(node1);
+	 * System.out.println(state1.equals(state2)); }
+	 */
 
 }
