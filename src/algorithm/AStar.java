@@ -24,7 +24,7 @@ public class AStar {
 
 		while (!openSet.isEmpty()) {
 			Node node = openSet.poll();
-			System.out.println("Processing node: " + node);
+			//System.out.println("Processing node: " + node);
 			if (problem.isDestState(node.getState())) {
 				System.out.println("Found");
 				return node;
@@ -61,14 +61,5 @@ public class AStar {
 
 		System.out.println(node);
 	}
-
-	/*
-	 * public static void main(String args[]) { Set<Node> closedSet = new
-	 * HashSet<Node>(); State state1 = new State(new Point<Integer>(1, 1), new
-	 * Point<Integer>(1, 1)); State state2 = new State(new Point<Integer>(1, 1),
-	 * new Point<Integer>(1, 1)); Node node1 = new Node(state1); Node node2 =
-	 * new Node(state2); closedSet.add(node1);
-	 * System.out.println(state1.equals(state2)); }
-	 */
-
+	
 }

@@ -66,8 +66,7 @@ public abstract class AbstractProblem implements Problem {
 
 	@Override
 	public boolean isDestState(State state) {
-		// return state.equals(destState);
-		return state.getPosition().equals(destState.getPosition());
+		 return state.equals(destState);
 	}
 
 	@Override
