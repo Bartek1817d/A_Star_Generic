@@ -20,11 +20,12 @@ public class AStar {
 	}
 
 	public Node run() {
-		openSet.add(new Node(problem.getInitState()));
+		Node initNode = new Node(problem.getInitState());
+		initNode.setH(problem.calculateHeuristic(initNode.getState()));
+		openSet.add(initNode);
 
 		while (!openSet.isEmpty()) {
 			Node node = openSet.poll();
-			//System.out.println("Processing node: " + node);
 			if (problem.isDestState(node.getState())) {
 				System.out.println("Found");
 				return node;
@@ -33,7 +34,6 @@ public class AStar {
 			float g = node.getG();
 			Set<State> neighbors = problem.getNeighborStates(node.getState());
 			for (State neighbor : neighbors) {
-				//System.out.println("Processing neighbor: " + neighbor);
 				Node neigh_node = new Node(neighbor);
 				if (closedSet.contains(neigh_node)) {
 					continue;
@@ -55,11 +55,13 @@ public class AStar {
 		return null;
 	}
 
-	public void generatePath(Node node) {
+	public int generatePath(Node node, int steps) {
+		int result = steps;
 		if (node.getParent() != null)
-			generatePath(node.getParent());
+			result = generatePath(node.getParent(), steps + 1);
 
 		System.out.println(node);
+		return result;
 	}
 	
 }
